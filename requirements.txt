@@ -1,11 +1,25 @@
-sentence-transformers==2.2.2
-langchain
+# Web & Core Utilities
 flask
-pypdf
 python-dotenv
-pinecone[grpc]
+pypdf
+
+# Vector Database
+pinecone-client[grpc]
+
+# Local Embeddings Engine
+sentence-transformers
+
+# LangChain Ecosystem (Modularized for 2026)
+langchain
+langchain-core
+langchain-community
+langchain-text-splitters
+
+# AI Integrations
 langchain-pinecone
-langchain_community
-langchain_openai
-langchain_experimental
--e .
+langchain-huggingface
+langchain-google-genai
+
+# (Optional: Add this back only if you still plan to use GPT-4 alongside Gemini)
+# langchain-openai 
+# langchain-experimental
