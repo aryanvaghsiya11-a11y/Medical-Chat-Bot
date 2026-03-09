@@ -1,4 +1,4 @@
-# End-to-end-Medical-Chatbot-Generative-AI
+# Medical-Chat-Bot
 
 
 # How to run?
@@ -7,7 +7,7 @@
 Clone the repository
 
 ```bash
-Project repo: https://github.com/
+Project repo: https://github.com/aryanvaghsiya11-a11y/Medical-Chat-Bot.git
 ```
 ### STEP 01- Create a conda environment after opening the repository
 
