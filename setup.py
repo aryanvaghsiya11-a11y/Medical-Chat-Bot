@@ -19,6 +19,7 @@ setup(
         "python-dotenv",
         "pypdf",
         "sentence-transformers",
-        "pyreadline3; sys_platform == 'win32'"
+        "pyreadline3; sys_platform == 'win32'",
+        "gunicorn"
     ]
 )
