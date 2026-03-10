@@ -1,25 +1,13 @@
-# Web & Core Utilities
-flask
-python-dotenv
-pypdf
-
-# Vector Database
-pinecone-client[grpc]
-
-# Local Embeddings Engine
-sentence-transformers
-
-# LangChain Ecosystem (Modularized for 2026)
-langchain
+Flask
+pinecone-client==3.2.2
+langchain-pinecone
+langchain-google-genai
+langchain-classic
 langchain-core
 langchain-community
 langchain-text-splitters
-
-# AI Integrations
-langchain-pinecone
 langchain-huggingface
-langchain-google-genai
-
-# (Optional: Add this back only if you still plan to use GPT-4 alongside Gemini)
-# langchain-openai 
-# langchain-experimental
+python-dotenv
+pypdf
+sentence-transformers
+pyreadline3; sys_platform == 'win32'

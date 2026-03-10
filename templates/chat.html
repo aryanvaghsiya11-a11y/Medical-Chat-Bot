@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="MediBot — Your AI-powered medical assistant. Ask health-related questions and get instant, concise answers from medical literature.">
+    <title>MediBot — Medical AI Assistant</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <!-- Animated Background Orbs -->
+    <div class="bg-orb bg-orb-1"></div>
+    <div class="bg-orb bg-orb-2"></div>
+    <div class="bg-orb bg-orb-3"></div>
+
+    <div class="chat-container">
+        <!-- Header -->
+        <header class="chat-header">
+            <div class="header-left">
+                <div class="logo-icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" fill="rgba(13,148,136,0.15)" stroke="#0D9488" stroke-width="1.5"/>
+                        <path d="M12 8v8M8 12h8" stroke="#0D9488" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <div class="header-text">
+                    <h1>MediBot</h1>
+                    <span class="status-badge">
+                        <span class="status-dot"></span>
+                        Online
+                    </span>
+                </div>
+            </div>
+            <div class="header-right">
+                <span class="header-subtitle">AI Medical Assistant</span>
+            </div>
+        </header>
+
+        <!-- Chat Messages Area -->
+        <div class="chat-messages" id="chatbox">
+            <!-- Welcome Message -->
+            <div class="message bot-message fade-in">
+                <div class="message-avatar">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" fill="rgba(13,148,136,0.2)" stroke="#0D9488" stroke-width="1.5"/>
+                        <path d="M12 8v8M8 12h8" stroke="#0D9488" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <div class="message-content">
+                    <p>Hello! 👋 I'm <strong>MediBot</strong>, your AI medical assistant. Ask me any health-related question and I'll provide concise answers from medical literature.</p>
+                    <span class="message-time">Just now</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Input Area -->
+        <div class="chat-input-area">
+            <div class="input-wrapper">
+                <input
+                    type="text"
+                    id="userInput"
+                    class="chat-input"
+                    placeholder="Ask a medical question..."
+                    autocomplete="off"
+                >
+                <button id="sendBtn" class="send-btn" onclick="sendMessage()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                        <path d="M22 2L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+            <p class="disclaimer">MediBot provides information from medical literature. Always consult a healthcare professional for medical advice.</p>
+        </div>
+    </div>
+
+    <!-- jQuery for AJAX -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <script>
+        const chatbox = document.getElementById("chatbox");
+        const userInput = document.getElementById("userInput");
+
+        // Send on Enter key
+        userInput.addEventListener("keypress", function(e) {
+            if (e.key === "Enter") {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+
+        function getCurrentTime() {
+            return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        }
+
+        function appendMessage(content, sender) {
+            const msgDiv = document.createElement("div");
+            msgDiv.classList.add("message", sender + "-message", "fade-in");
+
+            if (sender === "bot") {
+                msgDiv.innerHTML = `
+                    <div class="message-avatar">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" fill="rgba(13,148,136,0.2)" stroke="#0D9488" stroke-width="1.5"/>
+                            <path d="M12 8v8M8 12h8" stroke="#0D9488" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <div class="message-content">
+                        <p>${content}</p>
+                        <span class="message-time">${getCurrentTime()}</span>
+                    </div>
+                `;
+            } else {
+                msgDiv.innerHTML = `
+                    <div class="message-content">
+                        <p>${content}</p>
+                        <span class="message-time">${getCurrentTime()}</span>
+                    </div>
+                `;
+            }
+
+            chatbox.appendChild(msgDiv);
+            chatbox.scrollTop = chatbox.scrollHeight;
+        }
+
+        function showTypingIndicator() {
+            const typingDiv = document.createElement("div");
+            typingDiv.classList.add("message", "bot-message", "typing-indicator-msg", "fade-in");
+            typingDiv.id = "typingIndicator";
+            typingDiv.innerHTML = `
+                <div class="message-avatar">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" fill="rgba(13,148,136,0.2)" stroke="#0D9488" stroke-width="1.5"/>
+                        <path d="M12 8v8M8 12h8" stroke="#0D9488" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <div class="message-content">
+                    <div class="typing-indicator">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+            `;
+            chatbox.appendChild(typingDiv);
+            chatbox.scrollTop = chatbox.scrollHeight;
+        }
+
+        function removeTypingIndicator() {
+            const indicator = document.getElementById("typingIndicator");
+            if (indicator) indicator.remove();
+        }
+
+        function sendMessage() {
+            const msg = userInput.value.trim();
+            if (!msg) return;
+
+            // Append user message
+            appendMessage(msg, "user");
+            userInput.value = "";
+
+            // Show typing indicator
+            showTypingIndicator();
+
+            // Send to Flask backend
+            $.ajax({
+                data: { msg: msg },
+                type: "POST",
+                url: "/get",
+            }).done(function(data) {
+                removeTypingIndicator();
+                appendMessage(data, "bot");
+            });
+        }
+    </script>
+
+</body>
+</html>
