@@ -2,6 +2,8 @@
 
 An intelligent, conversational web application designed to assist users with medical and healthcare-related inquiries. This project leverages **Retrieval-Augmented Generation (RAG)** to provide accurate, context-aware responses grounded in medical literature.
 
+![image alt](https://github.com/aryanvaghsiya11-a11y/Medical-Chat-Bot/blob/b115b4cdc859776513e5b048dc400aba72d01c03/medical.png)
+
 ## ✨ Features
 
 * **Conversational AI:** Powered by Google's `Gemini 2.5 Flash` for fast, intelligent, and concise responses.
